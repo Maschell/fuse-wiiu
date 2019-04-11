@@ -92,14 +92,14 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
 
-        String driveLetter = "Y";
+        String mountPath = "";
 
         cmd = parser.parse(options, args);
 
         String inputPath = "";
 
         if (cmd.hasOption(OPTION_MOUNTPATH)) {
-            driveLetter = cmd.getOptionValue(OPTION_MOUNTPATH);
+            mountPath = cmd.getOptionValue(OPTION_MOUNTPATH);
         }
 
         if (cmd.hasOption(OPTION_INPUT)) {
@@ -132,6 +132,16 @@ public class Main {
             Settings.titlekeyPath = new File(cmd.getOptionValue(OPTION_TITLEKEYS));
         }
 
+        File mount = new File(mountPath);
+        File mountparent = mount.getParentFile();
+        if (mountparent != null && !mountparent.exists()) {
+            System.err.println("Mounting to " + mount + " is not possible." + mountparent + " does not exist");
+            return;
+        } else if (mount.exists()) {
+            System.err.println("Mounting to " + mount + " is not possible. It's already mounted or in use");
+            return;
+        }
+
         if (!Arrays.equals(HashUtil.hashSHA1(Settings.retailCommonKey), Settings.retailCommonKeyHash)) {
             System.err.println("WARNING: Retail common key is not as expected");
         } else {
@@ -160,18 +170,9 @@ public class Main {
         }
 
         RootFuseFS stub = new RootFuseFS(root);
-        try {
-            String path;
-            switch (Platform.getNativePlatform().getOS()) {
-            case WINDOWS:
-                path = driveLetter + ":\\";
-                break;
-            default:
-                path = "/tmp/mnt_wiiu_" + driveLetter;
-                new File(path).mkdirs();
-            }
-            System.out.println("Mounting " + new File(inputPath).getAbsolutePath() + " to " + path);
-            stub.mount(Paths.get(path), true, true);
+        try {       
+            System.out.println("Mounting " + new File(inputPath).getAbsolutePath() + " to " + mount.getAbsolutePath());
+            stub.mount(mount.toPath(), true, true);
         } finally {
             stub.umount();
         }
@@ -179,7 +180,8 @@ public class Main {
 
     private static Options getOptions() {
         Options options = new Options();
-        options.addOption(Option.builder(OPTION_MOUNTPATH).required().hasArg().desc("On Windows: the target drive letter. Unix: will be mounted to \"/tmp/mnt_wiiu_[MOUNTPATH]\"").build());
+        options.addOption(Option.builder(OPTION_MOUNTPATH).required().hasArg()
+                .desc("The target mount path.").build());
         options.addOption(Option.builder(OPTION_INPUT).required().hasArg().desc("input path").build());
         options.addOption(Option.builder(OPTION_DISCKEYS).optionalArg(true).hasArg()
                 .desc("Path of .key files used to decrypt WUD/WUX. If not set \"" + HOMEPATH + File.separator + DISC_KEY_PATH + "\" will be used.").build());

@@ -56,20 +56,23 @@ The most imported argument in the `-in` argument which defines the input path. I
 
 
 ## Mount path
-The mountpath will be set via the `-mountpath` argument and will set the target of fuse-wiiu. The expected value if different between differnt OS.
+The mountpath will be set via the `-mountpath` argument and will set the target of fuse-wiiu. This can be almost any path (and a drive on Windows).
+Just make sure:
+- The path doesn't exist - but the parent path (if existing) DOES exist.
+- (unix) The user can only mount on a mountpoint for which he has write permission
+- (unitx) The mountpoint must not be a sticky directory which isn't owned by the user (like /tmp usually is)
 
-### Windows
-On Windows, the files will be mounted to a completly new drive, so you have to pass a drive letter as a mountpass.
-Example:
+**Example Windows:**
 To mount the folder `H:/WiiU` to `Q:/` you would use something like this:
 `java "-Dfile.encoding=UTF-8" -jar wiiu-fuse.jar -in H:/WiiU -mountpath Q`
-**Note: You may need to force Java to use the UTF-8 charset. Quoting the VM argument is need by Powershell and may could be removed**
 
-### Unix
-On Unix, the mounted files are available inside a folder of the `/tmp/` directory. The exact path will be `/tmp/mnt_wiiu_[mountpath]` where `[mountpath]` will be replaced by the value of `-mountpath`.
-Example:
-To mount the home folder to `/tmp/mnt_wiiu_test` you use something like this:
-`java -jar wiiu-fuse.jar -in ~ -mountpath test`
+To mount the folder `H:/WiiU` to `C:/mounted` you would use something like this:
+`java "-Dfile.encoding=UTF-8" -jar wiiu-fuse.jar -in H:/WiiU -mountpath C:/mounted`
+**Note: You may need to force Java to use the UTF-8 charset. Quoting the VM argument is need by Powershell**
+
+**Example Unix:**
+To mount the home folder to `~/test` you use something like this:
+`java -jar wiiu-fuse.jar -in ~ -mountpath ~/test`
 
 
 ## Optional arguments.
