@@ -13,14 +13,14 @@ public class TicketUtils {
         File ticketFile = FileUtils.getFileIgnoringFilenameCases(folder.getAbsolutePath(), "title.tik");
 
         Ticket ticket = null;
-        if (ticketFile.exists()) {
+        if (ticketFile != null && ticketFile.exists()) {
             try {
                 ticket = Ticket.parseTicket(ticketFile, commonKey);
             } catch (IOException e) {
             }
         }
         if (ticket == null && keyFolder != null) {
-            File keyFile = FileUtils.getFileIgnoringFilenameCases(folder.getAbsolutePath(), String.format("%016X", titleID) + ".key");
+            File keyFile = FileUtils.getFileIgnoringFilenameCases(keyFolder.getAbsolutePath(), String.format("%016X", titleID) + ".key");
             if (keyFile.exists()) {
                 byte[] key;
                 try {
