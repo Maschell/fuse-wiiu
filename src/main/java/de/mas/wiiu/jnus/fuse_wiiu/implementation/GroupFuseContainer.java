@@ -87,14 +87,14 @@ public abstract class GroupFuseContainer implements FuseContainer {
     public int getattr(String path, FileStat stat) {
         path.replace("\\", "/");
         if (path.equals("/")) {
-            stat.st_mode.set(FileStat.S_IFDIR | FileStat.ALL_READ);
+            stat.st_mode.set(FileStat.S_IFDIR | 0755);
             stat.st_nlink.set(2);
             return 0;
         }
         if (path.split("/").length == 2) {
             for (String container : containerMap.keySet()) {
                 if (container.equals(path.split("/")[1])) {
-                    stat.st_mode.set(FileStat.S_IFDIR | FileStat.ALL_READ);
+                    stat.st_mode.set(FileStat.S_IFDIR | 0755);
                     stat.st_nlink.set(2);
                     return 0;
                 }

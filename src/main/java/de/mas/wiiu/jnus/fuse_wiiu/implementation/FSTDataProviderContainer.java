@@ -56,7 +56,7 @@ public class FSTDataProviderContainer implements FuseContainer {
     @Override
     public int getattr(String path, FileStat stat) {
         if (path.equals("/")) {
-            stat.st_mode.set(FileStat.S_IFDIR | FileStat.ALL_READ);
+            stat.st_mode.set(FileStat.S_IFDIR | 0755);
             stat.st_nlink.set(2);
             return 0;
         }
@@ -66,7 +66,7 @@ public class FSTDataProviderContainer implements FuseContainer {
         if (entryOpt.isPresent()) {
             FSTEntry entry = entryOpt.get();
             if (entry.isDir()) {
-                stat.st_mode.set(FileStat.S_IFDIR | FileStat.ALL_READ);
+                stat.st_mode.set(FileStat.S_IFDIR | 0755);
                 stat.st_nlink.set(2);
             } else {
                 stat.st_mode.set(FileStat.S_IFREG | FileStat.ALL_READ);
