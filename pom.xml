@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>com.github.Maschell</groupId>
 			<artifactId>JNUSLib</artifactId>
-			<version> 6e9b8df</version>
+			<version> 7d8bb58</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

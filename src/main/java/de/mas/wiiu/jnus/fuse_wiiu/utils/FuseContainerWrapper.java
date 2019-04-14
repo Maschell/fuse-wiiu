@@ -39,7 +39,7 @@ public class FuseContainerWrapper {
             }
         }
 
-        if (c.exists() && c.isFile() && (c.getName().endsWith(".wux") || c.getName().endsWith(".wud"))) {
+        if (c.exists() && c.isFile() && (c.getName().endsWith(".wux") || c.getName().endsWith(".wud") || c.getName().endsWith(".ddi"))) {
 
             result.put(prefix + c.getName(), new WUDFuseContainer(parent, c));
             result.put(prefix + "[EXTRA] " + c.getName(), new WUDMountedFuseContainer(parent, c));
