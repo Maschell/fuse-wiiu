@@ -53,6 +53,8 @@ public class LocalNUSTitleContainer extends GroupFuseContainer {
                 try {
                     t = NUSTitleLoaderLocal.loadNUSTitle(folder.getAbsolutePath(), ticket);
                 } catch (Exception e1) {
+                    e.printStackTrace();
+                    e1.printStackTrace();
                 }
             }
 

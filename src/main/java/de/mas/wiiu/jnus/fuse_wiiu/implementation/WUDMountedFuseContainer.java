@@ -46,7 +46,7 @@ public class WUDMountedFuseContainer extends WUDFuseContainer {
 
                         try {
                             fdp = new FSTDataProviderNUSTitle(NUSTitleLoaderFST.loadNUSTitle(dp, parent, Settings.retailCommonKey));
-                        } catch (ParseException e) {
+                        } catch (IOException | ParseException e) {
                             try {
                                 fdp = new FSTDataProviderNUSTitle(NUSTitleLoaderFST.loadNUSTitle(dp, parent, Settings.devCommonKey));
                             } catch (Exception e1) {
