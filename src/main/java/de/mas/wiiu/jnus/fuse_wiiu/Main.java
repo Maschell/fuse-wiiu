@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,7 +22,6 @@ import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.utils.FuseContainerWrapper;
 import de.mas.wiiu.jnus.utils.HashUtil;
 import de.mas.wiiu.jnus.utils.Utils;
-import jnr.ffi.Platform;
 
 public class Main {
     private static final String DEV_COMMON_KEY = "devcommon.key";

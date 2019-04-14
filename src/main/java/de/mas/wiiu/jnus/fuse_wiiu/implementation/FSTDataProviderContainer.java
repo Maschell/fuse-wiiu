@@ -105,7 +105,6 @@ public class FSTDataProviderContainer implements FuseContainer {
 
     @Override
     public int read(String path, Pointer buf, long size, long offset, FuseFileInfo fi) {
-        System.out.println("read " + path);
         Optional<FSTEntry> entryopt = FSTUtils.getFSTEntryByFullPath(getDataProvider().getRoot(), path);
         if (entryopt.isPresent() && !entryopt.get().isNotInPackage()) {
 
