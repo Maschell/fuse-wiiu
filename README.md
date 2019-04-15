@@ -90,7 +90,7 @@ It's possible to use any directory as input, `fuse-wiiu` will scan will useable 
 If a supported format is found and successfully mounted, a support starting with `[EMULATED] ` will be emulated, which will give you access to the files. The actual content and file layout may differ from format to format.
 
 ## Wii U disc images - WUD/WUX
-Images of Wii U discs are saved `.wud` (or `.wux` if compressed). Every .wux or .wud will be emulated as two different directories (for image names `game.wux`).
+Images of Wii U discs are saved `.wud` (or `.wux` if compressed, or `game_partX.wud` when dumped on FAT32). Every .wux or .wud will be emulated as up to three different directories (for image names `game.wux`).
 
 - [EMULATED] game.wux
     - This directory is the "normal" representation of a Wii U disc image. It'll  have one subfolder for each partition. The `GM`-Partitions will be mounted and decrypted directly in the common `code, content and meta` format. The `SI` contain the ticket and tmd for `GM` partitions. All other partitions give you files in the "installable" format (tmd,app,tik). 
@@ -99,6 +99,8 @@ Images of Wii U discs are saved `.wud` (or `.wux` if compressed). Every .wux or 
         - The `GM` partitions in the "installable" format. (Folders with the prefix `[ENCRYPTED] `)
         - Mounted and decrypted titles from all partitions. (Folder with the prefix `[DECRYPTED] [PARTITIONNAME]`)
             - This includes titles from the non-`GM` partitions (like updates), and installable titles from the decrypted `GM` partitions (titles from kiosk discs).
+- [EMULATED] [WUD] game.wux (Only for WUX and splitted WUD)
+    - In this directory you can access Wii U disc image as the orginal WUD.
 
 Expected file layout:
 ```

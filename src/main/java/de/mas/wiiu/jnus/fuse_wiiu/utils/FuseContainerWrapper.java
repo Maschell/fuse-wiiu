@@ -10,6 +10,7 @@ import de.mas.wiiu.jnus.fuse_wiiu.implementation.LocalBackupNUSTitleContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.LocalNUSTitleContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDFuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDMountedFuseContainer;
+import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDToWUDContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.implementations.wud.reader.WUDDiscReaderSplitted;
@@ -59,7 +60,10 @@ public class FuseContainerWrapper {
             }
 
             result.put(prefix + c.getName(), new WUDFuseContainer(parent, c));
-            result.put(prefix + "[EXTRA] " + c.getName(), new WUDMountedFuseContainer(parent, c));           
+            result.put(prefix + "[EXTRA] " + c.getName(), new WUDMountedFuseContainer(parent, c));
+            if (c.getName().endsWith("part1.wud") || c.getName().endsWith(".wux")) {
+                result.put(prefix + "[WUD] " + c.getName(), new WUDToWUDContainer(parent, c));
+            }
             return true;
 
         }
