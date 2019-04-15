@@ -12,6 +12,7 @@ import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDFuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDMountedFuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
+import de.mas.wiiu.jnus.implementations.wud.reader.WUDDiscReaderSplitted;
 import de.mas.wiiu.jnus.utils.Utils;
 
 public class FuseContainerWrapper {
@@ -39,12 +40,8 @@ public class FuseContainerWrapper {
             }
         }
 
-        if (c.exists() && c.isFile() && (c.getName().endsWith(".wux") || c.getName().endsWith(".wud") || c.getName().endsWith(".ddi"))) {
-
-            result.put(prefix + c.getName(), new WUDFuseContainer(parent, c));
-            result.put(prefix + "[EXTRA] " + c.getName(), new WUDMountedFuseContainer(parent, c));
+        if (checkWUD(result, parent, c)) {
             return result;
-
         }
 
         if (c.isDirectory()) {
@@ -53,6 +50,20 @@ public class FuseContainerWrapper {
 
         }
         return result;
+    }
+
+    private static boolean checkWUD(Map<String, FuseContainer> result, Optional<FuseDirectory> parent, File c) {
+        if (c.exists() && c.isFile() && (c.getName().endsWith(".wux") || c.getName().endsWith(".wud") || c.getName().endsWith(".ddi"))) {
+            if (c.length() == WUDDiscReaderSplitted.WUD_SPLITTED_FILE_SIZE && !c.getName().endsWith("part1.wud")) {
+                return false;
+            }
+
+            result.put(prefix + c.getName(), new WUDFuseContainer(parent, c));
+            result.put(prefix + "[EXTRA] " + c.getName(), new WUDMountedFuseContainer(parent, c));           
+            return true;
+
+        }
+        return false;
     }
 
 }
