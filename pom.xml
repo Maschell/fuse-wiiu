@@ -5,7 +5,7 @@
 
 	<groupId>de.mas.wiiu.jnus</groupId>
 	<artifactId>fuse-wiiu</artifactId>
-	<version>0.1</version>
+	<version>0.2</version>
 	<packaging>jar</packaging>
 
 	<name>fuse-wiiu</name>

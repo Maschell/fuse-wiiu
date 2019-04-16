@@ -54,7 +54,7 @@ jobs:
             export GOROOT=/usr/local/go
             export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
             go get github.com/tcnksm/ghr
-            ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME -prerelease -b 'Nightly release - Use caution!' `echo "v0.1-nightly-$(git rev-parse --short=7 HEAD)"` ci/
+            ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME -prerelease -b 'Nightly release - Use caution!' `echo "v0.2-nightly-$(git rev-parse --short=7 HEAD)"` ci/
 
       - store_artifacts:
           path: ci/

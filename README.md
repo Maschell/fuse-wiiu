@@ -3,7 +3,7 @@ fuse-wiiu is an easy way to extract data from Wii U titles in various formats.
 It's compatible to:
 - Title in the installable format (.tmd, .app, .h3 etc.)
 - Multiple versions of a title in the installable format (.tmd, .app, .h3 etc.)
-- Wii U disc images (WUD and WUX), including kiosk discs
+- Wii U disc images (WUD, WUX and splitted WUD), including kiosk discs
 
 fuse-wiiu requires Java 8 and fuse implementation thats compatible to you OS and CPU architecture.
 # Setup
