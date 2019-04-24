@@ -165,6 +165,11 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
 
     @Override
     public int readdir(String path, Pointer buf, FuseFillDir filter, long offset, FuseFileInfo fi) {
+        filter.apply(buf, ".", null, 0);
+        if (getParent().isPresent()) {
+            filter.apply(buf, "..", null, 0);
+        }
+        
         for (Content e : title.getTMD().getAllContents().values()) {
             filter.apply(buf, e.getFilename(), null, 0);
             if (e.isHashed()) {
