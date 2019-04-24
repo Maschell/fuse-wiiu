@@ -58,7 +58,12 @@ public class LocalNUSTitleContainer extends GroupFuseContainer {
                 }
             }
 
-            return new FSTDataProviderNUSTitle(t);
+            try {
+                return new FSTDataProviderNUSTitle(t);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
         }));
     }
 

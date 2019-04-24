@@ -1,6 +1,7 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import de.mas.wiiu.jnus.NUSTitle;
@@ -46,7 +47,12 @@ public class LocalBackupNUSTitleContainer extends GroupFuseContainer {
                         e1.printStackTrace();
                     }
                 }
-                return new FSTDataProviderNUSTitle(t);
+                try {
+                    return new FSTDataProviderNUSTitle(t);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }));
         }
     }
