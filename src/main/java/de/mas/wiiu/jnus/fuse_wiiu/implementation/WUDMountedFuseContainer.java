@@ -40,27 +40,31 @@ public class WUDMountedFuseContainer extends WUDFuseContainer {
         try {
             for (FSTDataProvider dp : dps) {
                 for (FSTEntry tmd : FSTUtils.getFSTEntriesByRegEx(dp.getRoot(), ".*tmd")) {
-                    FSTEntry parent = tmd.getParent();
-                    if (parent.getFileChildren().stream().filter(f -> f.getFilename().endsWith(".app")).findAny().isPresent()) {
-                        FSTDataProvider fdp = null;
+                    Optional<FSTEntry> parentOpt = tmd.getParent();
+                    if (parentOpt.isPresent()) {
+                        FSTEntry parent = parentOpt.get();
+                        if (parent.getFileChildren().stream().filter(f -> f.getFilename().endsWith(".app")).findAny().isPresent()) {
+                            FSTDataProvider fdp = null;
 
-                        try {
-                            fdp = new FSTDataProviderNUSTitle(NUSTitleLoaderFST.loadNUSTitle(dp, parent, Settings.retailCommonKey));
-                        } catch (IOException | ParseException e) {
                             try {
-                                fdp = new FSTDataProviderNUSTitle(NUSTitleLoaderFST.loadNUSTitle(dp, parent, Settings.devCommonKey));
-                            } catch (Exception e1) {
-                                System.out.println("Ignoring " + parent.getFilename() + " :" + e1.getClass().getName() + " " + e1.getMessage());
+                                fdp = new FSTDataProviderNUSTitle(NUSTitleLoaderFST.loadNUSTitle(dp, parent, Settings.retailCommonKey));
+                            } catch (IOException | ParseException e) {
+                                try {
+                                    fdp = new FSTDataProviderNUSTitle(NUSTitleLoaderFST.loadNUSTitle(dp, parent, Settings.devCommonKey));
+                                } catch (Exception e1) {
+                                    System.out.println("Ignoring " + parent.getFilename() + " :" + e1.getClass().getName() + " " + e1.getMessage());
+                                    continue;
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Ignoring " + parent.getFilename() + " :" + e.getClass().getName() + " " + e.getMessage());
                                 continue;
                             }
-                        } catch (Exception e) {
-                            System.out.println("Ignoring " + parent.getFilename() + " :" + e.getClass().getName() + " " + e.getMessage());
-                            continue;
+
+                            FSTDataProvider fdpCpy = fdp;
+
+                            this.addFuseContainer("[DECRYPTED] [" + dp.getName() + "] " + parent.getFilename(),
+                                    new FSTDataProviderContainer(getParent(), fdpCpy));
                         }
-
-                        FSTDataProvider fdpCpy = fdp;
-
-                        this.addFuseContainer("[DECRYPTED] [" + dp.getName() + "] " + parent.getFilename(), new FSTDataProviderContainer(getParent(), fdpCpy));
                     }
 
                 }
