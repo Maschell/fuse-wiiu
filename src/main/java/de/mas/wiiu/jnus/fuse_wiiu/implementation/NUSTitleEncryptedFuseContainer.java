@@ -212,7 +212,7 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
 
             byte[] data;
             try {
-                data = title.getDataProvider().getChunkFromContent(c, offset, (int) size);
+                data = title.getDataProvider().readContent(c, offset, (int) size);
                 buf.put(0, data, 0, data.length);
                 return data.length;
             } catch (Exception e) {
