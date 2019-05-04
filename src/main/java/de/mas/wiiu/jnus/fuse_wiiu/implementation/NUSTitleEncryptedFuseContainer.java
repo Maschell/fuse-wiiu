@@ -197,6 +197,11 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
         if (path.equals("/")) {
             return -ErrorCodes.EISDIR();
         }
+        
+        if(size > Integer.MAX_VALUE) {
+            System.err.println("Request read size was too big.");
+            return -ErrorCodes.EIO();
+        }
 
         path = path.substring(1);
 
@@ -204,7 +209,7 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
         if (coOptional.isPresent()) {
             Content c = coOptional.get();
             if (offset >= c.getEncryptedFileSize()) {
-                return -ErrorCodes.ENOENT();
+                return -ErrorCodes.EIO();
             }
             if (offset + size > c.getEncryptedFileSize()) {
                 size = c.getEncryptedFileSize() - offset;
@@ -225,7 +230,7 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
                 byte[] hash = h3Data.get();
 
                 if (offset >= hash.length) {
-                    return -ErrorCodes.ENOENT();
+                    return -ErrorCodes.EIO();
                 }
                 if (offset + size > hash.length) {
                     size = hash.length - offset;

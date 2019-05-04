@@ -116,6 +116,11 @@ public class FSTDataProviderContainer implements FuseContainer {
             if (offset + size > entry.getFileSize()) {
                 size = entry.getFileSize() - offset;
             }
+            
+            if(size > Integer.MAX_VALUE) {
+                System.err.println("Request read size was too big.");
+                return -ErrorCodes.EIO();
+            }
 
             try {
                 byte[] data = getDataProvider().readFile(entry, offset, size);
