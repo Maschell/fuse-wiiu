@@ -1,5 +1,6 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -123,11 +124,22 @@ public class FSTDataProviderContainer implements FuseContainer {
             }
 
             try {
-                byte[] data = getDataProvider().readFile(entry, offset, size);
+                byte[] data;
+                if (offset % 16 > 0) {
+                    // make sure the offset is aligned to 0x10;
+                    // in worst case we read 15 additional bytes-
+                    long newOffset = (offset / 16) * 16;
+                    int diff = (int) (offset - newOffset);
+                    data = getDataProvider().readFile(entry, newOffset, size + diff);
 
-                buf.put(0, data, 0, data.length);
+                    buf.put(0, data, diff, data.length - diff);
 
-                return data.length;
+                    return (int) (data.length > size ? size : data.length);
+                } else {
+                    data = getDataProvider().readFile(entry, offset, size);
+                    buf.put(0, data, 0, data.length);
+                    return data.length;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return -ErrorCodes.ENOENT();
