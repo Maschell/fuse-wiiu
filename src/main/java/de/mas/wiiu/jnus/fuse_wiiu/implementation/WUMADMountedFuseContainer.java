@@ -14,9 +14,9 @@ import de.mas.wiiu.jnus.implementations.wud.wumad.WumadInfo;
 import de.mas.wiiu.jnus.implementations.wud.wumad.WumadParser;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
 
-public class WUMADFuseContainer extends PartitionFuseContainer<WumadInfo> {
+public class WUMADMountedFuseContainer extends RecursivePartitionFuseContainer<WumadInfo> {
 
-    public WUMADFuseContainer(Optional<FuseDirectory> parent, File c) {
+    public WUMADMountedFuseContainer(Optional<FuseDirectory> parent, File c) {
         super(parent, c);
     }
 

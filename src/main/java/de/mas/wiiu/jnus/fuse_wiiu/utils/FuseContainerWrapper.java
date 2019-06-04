@@ -12,6 +12,7 @@ import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDFuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDMountedFuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDToWUDContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUMADFuseContainer;
+import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUMADMountedFuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WoomyNUSTitleContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
@@ -48,8 +49,10 @@ public class FuseContainerWrapper {
             return result;
         }
         
-        if (c.exists() && c.getName().endsWith(".wumad")) {            
+        if (c.exists() && c.getName().endsWith(".wumad")) {
             result.put(prefix + c.getName(), new WUMADFuseContainer(parent, c));
+            result.put(prefix + "[EXTRA] " + c.getName(), new WUMADMountedFuseContainer(parent, c));
+            
             return result;
         }
         
