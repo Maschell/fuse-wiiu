@@ -13,49 +13,37 @@ import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.fuse_wiiu.utils.WUDUtils;
 import de.mas.wiiu.jnus.implementations.wud.parser.WUDInfo;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
-import lombok.val;
 
-public class WUDFuseContainer extends GroupFuseContainer {
-    private final File input;
+public class WUDFuseContainer extends PartitionFuseContainer<WUDInfo> {
 
     public WUDFuseContainer(Optional<FuseDirectory> parent, File input) {
-        super(parent);
-        this.input = input;
+        super(parent, input);
     }
 
     @Override
-    protected void doInit() {
-        Optional<WUDInfo> WUDInfoOpt = WUDUtils.loadWUDInfo(input);
-        if (WUDInfoOpt.isPresent()) {
-            parseContents(WUDInfoOpt.get());
-        } else {
-            System.out.println("Failed to parse WUD/WUX " + input.getAbsolutePath());
-        }
+    protected Optional<WUDInfo> loadInfo(File input) {
+        return WUDUtils.loadWUDInfo(input);
     }
 
-    protected void parseContents(WUDInfo wudInfo) {
+    @Override
+    protected List<FSTDataProvider> getDataProvider(WUDInfo info) {
         List<FSTDataProvider> dps = new ArrayList<>();
 
         try {
-            dps = WUDLoader.getPartitonsAsFSTDataProvider(wudInfo, Settings.retailCommonKey);
+            dps = WUDLoader.getPartitonsAsFSTDataProvider(info, Settings.retailCommonKey);
 
         } catch (ParseException e) {
             try {
-                dps = WUDLoader.getPartitonsAsFSTDataProvider(wudInfo, Settings.devCommonKey);
+                dps = WUDLoader.getPartitonsAsFSTDataProvider(info, Settings.devCommonKey);
             } catch (IOException | ParseException e1) {
                 e.printStackTrace();
                 e1.printStackTrace();
-                System.out.println("Ignoring " + input.getAbsolutePath() + " :" + e1.getClass().getName() + " " + e1.getMessage());
+                // System.out.println("Ignoring " + input.getAbsolutePath() + " :" + e1.getClass().getName() + " " + e1.getMessage());
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Ignoring " + input.getAbsolutePath() + " :" + e.getClass().getName() + " " + e.getMessage());
+            // System.out.println("Ignoring " + input.getAbsolutePath() + " :" + e.getClass().getName() + " " + e.getMessage());
         }
-
-        for (val dp : dps) {
-            this.addFuseContainer(dp.getName(), new FSTDataProviderContainer(getParent(), dp));
-        }
-
+        return dps;
     }
-
 }

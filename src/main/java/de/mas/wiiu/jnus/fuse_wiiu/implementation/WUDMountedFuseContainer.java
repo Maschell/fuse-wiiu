@@ -7,81 +7,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.mas.wiiu.jnus.NUSTitleLoaderFST;
 import de.mas.wiiu.jnus.WUDLoader;
-import de.mas.wiiu.jnus.entities.fst.FSTEntry;
 import de.mas.wiiu.jnus.fuse_wiiu.Settings;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
-import de.mas.wiiu.jnus.implementations.FSTDataProviderNUSTitle;
+import de.mas.wiiu.jnus.fuse_wiiu.utils.WUDUtils;
 import de.mas.wiiu.jnus.implementations.wud.parser.WUDInfo;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
-import de.mas.wiiu.jnus.interfaces.HasNUSTitle;
-import de.mas.wiiu.jnus.utils.FSTUtils;
 
-public class WUDMountedFuseContainer extends WUDFuseContainer {
+public class WUDMountedFuseContainer extends RecursivePartitionFuseContainer<WUDInfo> {
 
     public WUDMountedFuseContainer(Optional<FuseDirectory> parent, File input) {
         super(parent, input);
     }
 
     @Override
-    protected void parseContents(WUDInfo wudinfo) {
+    protected List<FSTDataProvider> getDataProvider(WUDInfo info) {
         List<FSTDataProvider> dps = new ArrayList<>();
         try {
-            dps = WUDLoader.getPartitonsAsFSTDataProvider(wudinfo, Settings.retailCommonKey);
+            dps = WUDLoader.getPartitonsAsFSTDataProvider(info, Settings.retailCommonKey);
         } catch (Exception e) {
             try {
-                dps = WUDLoader.getPartitonsAsFSTDataProvider(wudinfo, Settings.devCommonKey);
+                dps = WUDLoader.getPartitonsAsFSTDataProvider(info, Settings.devCommonKey);
             } catch (IOException | ParseException e1) {
-                return;
+                return dps;
             }
         }
+        return dps;
+    }
 
-        try {
-            for (FSTDataProvider dp : dps) {
-                for (FSTEntry tmd : FSTUtils.getFSTEntriesByRegEx(dp.getRoot(), ".*tmd")) {
-                    Optional<FSTEntry> parentOpt = tmd.getParent();
-                    if (parentOpt.isPresent()) {
-                        FSTEntry parent = parentOpt.get();
-                        if (parent.getFileChildren().stream().filter(f -> f.getFilename().endsWith(".app")).findAny().isPresent()) {
-                            FSTDataProvider fdp = null;
-
-                            try {
-                                fdp = new FSTDataProviderNUSTitle(NUSTitleLoaderFST.loadNUSTitle(dp, parent, Settings.retailCommonKey));
-                            } catch (IOException | ParseException e) {
-                                try {
-                                    fdp = new FSTDataProviderNUSTitle(NUSTitleLoaderFST.loadNUSTitle(dp, parent, Settings.devCommonKey));
-                                } catch (Exception e1) {
-                                    System.out.println("Ignoring " + parent.getFilename() + " :" + e1.getClass().getName() + " " + e1.getMessage());
-                                    continue;
-                                }
-                            } catch (Exception e) {
-                                System.out.println("Ignoring " + parent.getFilename() + " :" + e.getClass().getName() + " " + e.getMessage());
-                                continue;
-                            }
-
-                            FSTDataProvider fdpCpy = fdp;
-
-                            this.addFuseContainer("[DECRYPTED] [" + dp.getName() + "] " + parent.getFilename(),
-                                    new FSTDataProviderContainer(getParent(), fdpCpy));
-                        }
-                    }
-
-                }
-
-                if (dp instanceof HasNUSTitle) {
-                    try {
-                        this.addFuseContainer("[ENCRYPTED] " + dp.getName(), new NUSTitleEncryptedFuseContainer(getParent(), ((HasNUSTitle) dp).getNUSTitle()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    @Override
+    protected Optional<WUDInfo> loadInfo(File input) {
+        return WUDUtils.loadWUDInfo(input);
     }
 
 }
