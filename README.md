@@ -3,7 +3,7 @@ fuse-wiiu is an easy way to extract data from Wii U titles in various formats.
 It's compatible to:
 - Title in the installable format (.tmd, .app, .h3 etc.)
 - Multiple versions of a title in the installable format (.tmd, .app, .h3 etc.)
-- Wii U disc images (WUD, WUX and splitted WUD), including kiosk discs
+- Wii U disc images (WUD, WUX and splitted WUD), including kiosk discs and .wumad files.
 
 fuse-wiiu requires Java 8 and fuse implementation thats compatible to you OS and CPU architecture.
 # Setup
@@ -89,8 +89,8 @@ It's possible to use any directory as input, `fuse-wiiu` will scan will useable 
 
 If a supported format is found and successfully mounted, a support starting with `[EMULATED] ` will be emulated, which will give you access to the files. The actual content and file layout may differ from format to format.
 
-## Wii U disc images - WUD/WUX
-Images of Wii U discs are saved `.wud` (or `.wux` if compressed, or `game_partX.wud` when dumped on FAT32). Every .wux or .wud will be emulated as up to three different directories (for image names `game.wux`).
+## Wii U disc images - WUD/WUX/Wumad
+Images of Wii U discs are saved `.wud` (or `.wux` if compressed, or `game_partX.wud` when dumped on FAT32). Every .wux, .wud or .wumad will be emulated as up to three different directories (for image names `game.wux`).
 
 - [EMULATED] game.wux
     - This directory is the "normal" representation of a Wii U disc image. It'll  have one subfolder for each partition. The `GM`-Partitions will be mounted and decrypted directly in the common `code, content and meta` format. The `SI` contain the ticket and tmd for `GM` partitions. All other partitions give you files in the "installable" format (tmd,app,tik). 
@@ -108,7 +108,7 @@ game.wux (or game.wud)
 (game.key)
 ```
 
-For all discs (except kiosk discs), a file containing the disc key is required. This has be either in a `.key` in the same folder as the wux/wud or in `~/.wiiu/disckeypath` (with the same basename e.g `game.wux` -> `game.key`).
+For all discs (except kiosk discs and .wumad), a file containing the disc key is required. This has be either in a `.key` in the same folder as the wux/wud or in `~/.wiiu/disckeypath` (with the same basename e.g `game.wux` -> `game.key`).
 
 Multiple WUD/WUX in the same directory are possible, they won't be mounted until you open them.
 
