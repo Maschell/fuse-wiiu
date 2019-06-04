@@ -11,7 +11,6 @@ import de.mas.wiiu.jnus.WumadLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.Settings;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.implementations.wud.wumad.WumadInfo;
-import de.mas.wiiu.jnus.implementations.wud.wumad.WumadParser;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
 
 public class WUMADFuseContainer extends PartitionFuseContainer<WumadInfo> {
@@ -24,7 +23,7 @@ public class WUMADFuseContainer extends PartitionFuseContainer<WumadInfo> {
     protected Optional<WumadInfo> loadInfo(File input) {
         if (input != null && input.exists()) {
             try {
-                return Optional.of(WumadParser.createWumadInfo(input));
+                return Optional.of(WumadLoader.load(input));
             } catch (Exception e) {
                 e.printStackTrace();
             }
