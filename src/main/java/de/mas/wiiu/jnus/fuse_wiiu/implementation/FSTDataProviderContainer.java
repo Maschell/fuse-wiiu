@@ -1,6 +1,5 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Supplier;
 

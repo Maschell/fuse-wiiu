@@ -4,31 +4,30 @@ import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
+import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FSTDataProviderLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
 import lombok.val;
 
-public abstract class PartitionFuseContainer<T> extends GroupFuseContainer {
+public class MultipleFSTDataProviderFuseContainer<T> extends GroupFuseContainer {
     private final File file;
+    private final FSTDataProviderLoader<T> loader;
 
-    public PartitionFuseContainer(Optional<FuseDirectory> parent, File file) {
+    public MultipleFSTDataProviderFuseContainer(Optional<FuseDirectory> parent, File file, FSTDataProviderLoader<T> loader) {
         super(parent);
         this.file = file;
+        this.loader = loader;
     }
 
     @Override
     protected void doInit() {
-        Optional<T> infoOpt = loadInfo(file);
+        Optional<T> infoOpt = loader.loadInfo(file);
         if (infoOpt.isPresent()) {
-            parseContents(getDataProvider(infoOpt.get()));
+            parseContents(loader.getDataProvider(infoOpt.get()));
         } else {
             System.err.println("Failed to parse " + file.getAbsolutePath());
         }
     }
-
-    protected abstract Optional<T> loadInfo(File input);
-
-    abstract protected List<FSTDataProvider> getDataProvider(T info);
 
     void parseContents(List<FSTDataProvider> dps) {
         for (val dp : dps) {

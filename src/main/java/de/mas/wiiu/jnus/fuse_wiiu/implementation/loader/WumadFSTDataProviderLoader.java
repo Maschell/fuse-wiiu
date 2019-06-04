@@ -1,4 +1,4 @@
-package de.mas.wiiu.jnus.fuse_wiiu.implementation;
+package de.mas.wiiu.jnus.fuse_wiiu.implementation.loader;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,18 +9,20 @@ import java.util.Optional;
 
 import de.mas.wiiu.jnus.WumadLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.Settings;
-import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
+import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FSTDataProviderLoader;
 import de.mas.wiiu.jnus.implementations.wud.wumad.WumadInfo;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
+import lombok.Getter;
 
-public class WUMADMountedFuseContainer extends RecursivePartitionFuseContainer<WumadInfo> {
-
-    public WUMADMountedFuseContainer(Optional<FuseDirectory> parent, File c) {
-        super(parent, c);
+public class WumadFSTDataProviderLoader implements FSTDataProviderLoader<WumadInfo> {
+    @Getter
+    private static WumadFSTDataProviderLoader instance =  new WumadFSTDataProviderLoader();
+    
+    private WumadFSTDataProviderLoader() {
     }
-
+    
     @Override
-    protected Optional<WumadInfo> loadInfo(File input) {
+    public Optional<WumadInfo> loadInfo(File input) {
         if (input != null && input.exists()) {
             try {
                 return Optional.of(WumadLoader.load(input));
@@ -32,7 +34,7 @@ public class WUMADMountedFuseContainer extends RecursivePartitionFuseContainer<W
     }
 
     @Override
-    protected List<FSTDataProvider> getDataProvider(WumadInfo info) {
+    public List<FSTDataProvider> getDataProvider(WumadInfo info) {
         List<FSTDataProvider> dps = new ArrayList<>();
         try {
             dps = WumadLoader.getPartitonsAsFSTDataProvider(info, Settings.retailCommonKey);
@@ -45,5 +47,4 @@ public class WUMADMountedFuseContainer extends RecursivePartitionFuseContainer<W
         }
         return dps;
     }
-
 }

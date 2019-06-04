@@ -8,12 +8,12 @@ import java.util.Optional;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.FSFuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.LocalBackupNUSTitleContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.LocalNUSTitleContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDFuseContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDMountedFuseContainer;
+import de.mas.wiiu.jnus.fuse_wiiu.implementation.MultipleFSTDataProviderFuseContainer;
+import de.mas.wiiu.jnus.fuse_wiiu.implementation.MultipleFSTDataProviderRecursiveFuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDToWUDContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUMADFuseContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUMADMountedFuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WoomyNUSTitleContainer;
+import de.mas.wiiu.jnus.fuse_wiiu.implementation.loader.WUDFSTDataProviderLoader;
+import de.mas.wiiu.jnus.fuse_wiiu.implementation.loader.WumadFSTDataProviderLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.implementations.wud.reader.WUDDiscReaderSplitted;
@@ -50,8 +50,8 @@ public class FuseContainerWrapper {
         }
         
         if (c.exists() && c.getName().endsWith(".wumad")) {
-            result.put(prefix + c.getName(), new WUMADFuseContainer(parent, c));
-            result.put(prefix + "[EXTRA] " + c.getName(), new WUMADMountedFuseContainer(parent, c));
+            result.put(prefix + c.getName(), new MultipleFSTDataProviderFuseContainer<>(parent, c, WumadFSTDataProviderLoader.getInstance()));
+            result.put(prefix + "[EXTRA] " + c.getName(), new MultipleFSTDataProviderRecursiveFuseContainer<>(parent, c, WumadFSTDataProviderLoader.getInstance()));
             
             return result;
         }
@@ -75,8 +75,8 @@ public class FuseContainerWrapper {
                 return false;
             }
 
-            result.put(prefix + c.getName(), new WUDFuseContainer(parent, c));
-            result.put(prefix + "[EXTRA] " + c.getName(), new WUDMountedFuseContainer(parent, c));
+            result.put(prefix + c.getName(), new MultipleFSTDataProviderFuseContainer<>(parent, c, WUDFSTDataProviderLoader.getInstance()));
+            result.put(prefix + "[EXTRA] " + c.getName(), new MultipleFSTDataProviderRecursiveFuseContainer<>(parent, c, WUDFSTDataProviderLoader.getInstance()));
             if (c.getName().endsWith("part1.wud") || c.getName().endsWith(".wux")) {
                 result.put(prefix + "[WUD] " + c.getName(), new WUDToWUDContainer(parent, c));
             }

@@ -9,15 +9,16 @@ import java.util.Optional;
 import de.mas.wiiu.jnus.NUSTitleLoaderFST;
 import de.mas.wiiu.jnus.entities.fst.FSTEntry;
 import de.mas.wiiu.jnus.fuse_wiiu.Settings;
+import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FSTDataProviderLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.implementations.FSTDataProviderNUSTitle;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
 import de.mas.wiiu.jnus.interfaces.HasNUSTitle;
 import de.mas.wiiu.jnus.utils.FSTUtils;
 
-public abstract class RecursivePartitionFuseContainer<T> extends PartitionFuseContainer<T> {
-    public RecursivePartitionFuseContainer(Optional<FuseDirectory> parent, File input) {
-        super(parent, input);
+public class MultipleFSTDataProviderRecursiveFuseContainer<T> extends MultipleFSTDataProviderFuseContainer<T> {
+    public MultipleFSTDataProviderRecursiveFuseContainer(Optional<FuseDirectory> parent, File input, FSTDataProviderLoader<T> loader) {
+        super(parent, input, loader);
     }
 
     @Override

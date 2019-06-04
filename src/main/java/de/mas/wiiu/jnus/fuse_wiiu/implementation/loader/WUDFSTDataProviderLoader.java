@@ -1,4 +1,4 @@
-package de.mas.wiiu.jnus.fuse_wiiu.implementation;
+package de.mas.wiiu.jnus.fuse_wiiu.implementation.loader;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,19 +9,21 @@ import java.util.Optional;
 
 import de.mas.wiiu.jnus.WUDLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.Settings;
-import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
+import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FSTDataProviderLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.utils.WUDUtils;
 import de.mas.wiiu.jnus.implementations.wud.parser.WUDInfo;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
+import lombok.Getter;
 
-public class WUDMountedFuseContainer extends RecursivePartitionFuseContainer<WUDInfo> {
-
-    public WUDMountedFuseContainer(Optional<FuseDirectory> parent, File input) {
-        super(parent, input);
+public class WUDFSTDataProviderLoader implements FSTDataProviderLoader<WUDInfo> {
+    @Getter
+    private static WUDFSTDataProviderLoader instance =  new WUDFSTDataProviderLoader();
+    
+    private WUDFSTDataProviderLoader() {
     }
-
+    
     @Override
-    protected List<FSTDataProvider> getDataProvider(WUDInfo info) {
+    public List<FSTDataProvider> getDataProvider(WUDInfo info) {
         List<FSTDataProvider> dps = new ArrayList<>();
         try {
             dps = WUDLoader.getPartitonsAsFSTDataProvider(info, Settings.retailCommonKey);
@@ -36,8 +38,7 @@ public class WUDMountedFuseContainer extends RecursivePartitionFuseContainer<WUD
     }
 
     @Override
-    protected Optional<WUDInfo> loadInfo(File input) {
+    public Optional<WUDInfo> loadInfo(File input) {
         return WUDUtils.loadWUDInfo(input);
     }
-
 }
