@@ -135,7 +135,7 @@ public class Main {
         if (mountparent != null && !mountparent.exists()) {
             System.err.println("Mounting to " + mount + " is not possible." + mountparent + " does not exist");
             return;
-        } else if (mount.exists()) {
+        } else if (mount.exists() && System.getProperty("os.name").contains("Windows")) {
             System.err.println("Mounting to " + mount + " is not possible. It's already mounted or in use");
             return;
         }
