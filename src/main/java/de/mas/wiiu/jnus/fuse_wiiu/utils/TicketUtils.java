@@ -10,8 +10,10 @@ import de.mas.wiiu.jnus.utils.FileUtils;
 
 public class TicketUtils {
     public static Optional<Ticket> getTicket(File folder, File keyFolder, long titleID, byte[] commonKey) {
-        File ticketFile = FileUtils.getFileIgnoringFilenameCases(folder.getAbsolutePath(), "title.tik");
-
+        File ticketFile = null;
+        if (folder != null) {
+            ticketFile = FileUtils.getFileIgnoringFilenameCases(folder.getAbsolutePath(), "title.tik");
+        }
         Ticket ticket = null;
         if (ticketFile != null && ticketFile.exists()) {
             try {
@@ -19,9 +21,10 @@ public class TicketUtils {
             } catch (IOException e) {
             }
         }
+
         if (ticket == null && keyFolder != null) {
             File keyFile = FileUtils.getFileIgnoringFilenameCases(keyFolder.getAbsolutePath(), String.format("%016X", titleID) + ".key");
-            if (keyFile.exists()) {
+            if (keyFile != null && keyFile.exists()) {
                 byte[] key;
                 try {
                     key = Files.readAllBytes(keyFile.toPath());
