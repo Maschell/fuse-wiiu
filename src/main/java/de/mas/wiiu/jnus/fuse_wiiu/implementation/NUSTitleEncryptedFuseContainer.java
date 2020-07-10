@@ -44,7 +44,6 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
         } catch (NumberFormatException e) {
         }
         return Optional.empty();
-
     }
 
     @SuppressWarnings("unused")
@@ -55,7 +54,7 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
         return getContentForPath(path.substring(0, 8) + ".app").flatMap(c -> {
             if (c.isHashed()) {
                 try {
-                    Optional<byte[]> hash = title.getDataProvider().getContentH3Hash(c);
+                    Optional<byte[]> hash = title.getDataProcessor().getDataProvider().getContentH3Hash(c);
                     return hash;
                 } catch (IOException e) {
                 }
@@ -67,7 +66,7 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
     private Optional<byte[]> getTMDforPath(String path) {
         return getFileforPath(path, "title.tmd", () -> {
             try {
-                return title.getDataProvider().getRawTMD();
+                return title.getDataProcessor().getDataProvider().getRawTMD();
             } catch (IOException e) {
                 return Optional.empty();
             }
@@ -77,7 +76,7 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
     private Optional<byte[]> getTicketforPath(String path) {
         return getFileforPath(path, "title.tik", () -> {
             try {
-                return title.getDataProvider().getRawTicket();
+                return title.getDataProcessor().getDataProvider().getRawTicket();
             } catch (IOException e) {
                 return Optional.empty();
             }
@@ -87,7 +86,7 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
     private Optional<byte[]> getCertforPath(String path) {
         return getFileforPath(path, "title.cert", () -> {
             try {
-                return title.getDataProvider().getRawCert();
+                return title.getDataProcessor().getDataProvider().getRawCert();
             } catch (IOException e) {
                 return Optional.empty();
             }
@@ -217,7 +216,7 @@ public class NUSTitleEncryptedFuseContainer implements FuseContainer {
 
             byte[] data;
             try {
-                data = title.getDataProvider().readContent(c, offset, (int) size);
+                data = title.getDataProcessor().readContent(c, offset, (int) size);
                 buf.put(0, data, 0, data.length);
                 return data.length;
             } catch (Exception e) {
