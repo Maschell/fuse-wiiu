@@ -170,7 +170,7 @@ public class Main {
         RootFuseFS stub = new RootFuseFS(root);
         try {       
             System.out.println("Mounting " + new File(inputPath).getAbsolutePath() + " to " + mount.getAbsolutePath());
-            stub.mount(mount.toPath(), true, true);
+            stub.mount(mount.toPath(), true, false);
         } finally {
             stub.umount();
         }
