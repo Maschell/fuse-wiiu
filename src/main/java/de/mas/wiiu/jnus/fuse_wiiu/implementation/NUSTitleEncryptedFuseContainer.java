@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import de.mas.wiiu.jnus.NUSTitle;
-import de.mas.wiiu.jnus.entities.content.Content;
+import de.mas.wiiu.jnus.entities.TMD.Content;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import jnr.ffi.Pointer;

@@ -9,10 +9,10 @@ import org.apache.commons.io.FilenameUtils;
 
 import de.mas.wiiu.jnus.WUDLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.Settings;
-import de.mas.wiiu.jnus.implementations.wud.parser.WUDInfo;
+import de.mas.wiiu.jnus.implementations.wud.WiiUDisc;
 
 public class WUDUtils {
-    public static Optional<WUDInfo> loadWUDInfo(File file) {
+    public static Optional<WiiUDisc> loadWUDInfo(File file) {
         String FSfilename = file.getName();
         String basename = FilenameUtils.getBaseName(FSfilename);
         File keyFile = new File(file.getParent() + File.separator + basename + ".key");

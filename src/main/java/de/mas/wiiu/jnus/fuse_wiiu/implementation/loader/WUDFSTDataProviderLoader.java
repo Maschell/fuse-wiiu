@@ -11,11 +11,11 @@ import de.mas.wiiu.jnus.WUDLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.Settings;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FSTDataProviderLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.utils.WUDUtils;
-import de.mas.wiiu.jnus.implementations.wud.parser.WUDInfo;
+import de.mas.wiiu.jnus.implementations.wud.WiiUDisc;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
 import lombok.Getter;
 
-public class WUDFSTDataProviderLoader implements FSTDataProviderLoader<WUDInfo> {
+public class WUDFSTDataProviderLoader implements FSTDataProviderLoader<WiiUDisc> {
     @Getter
     private static WUDFSTDataProviderLoader instance =  new WUDFSTDataProviderLoader();
     
@@ -23,7 +23,7 @@ public class WUDFSTDataProviderLoader implements FSTDataProviderLoader<WUDInfo> 
     }
     
     @Override
-    public List<FSTDataProvider> getDataProvider(WUDInfo info) {
+    public List<FSTDataProvider> getDataProvider(WiiUDisc info) {
         List<FSTDataProvider> dps = new ArrayList<>();
         try {
             dps = WUDLoader.getPartitonsAsFSTDataProvider(info, Settings.retailCommonKey);
@@ -38,7 +38,7 @@ public class WUDFSTDataProviderLoader implements FSTDataProviderLoader<WUDInfo> 
     }
 
     @Override
-    public Optional<WUDInfo> loadInfo(File input) {
+    public Optional<WiiUDisc> loadInfo(File input) {
         return WUDUtils.loadWUDInfo(input);
     }
 }

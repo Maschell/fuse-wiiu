@@ -8,7 +8,7 @@ import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.fuse_wiiu.utils.WUDUtils;
 import de.mas.wiiu.jnus.implementations.wud.WUDImage;
-import de.mas.wiiu.jnus.implementations.wud.parser.WUDInfo;
+import de.mas.wiiu.jnus.implementations.wud.WiiUDisc;
 import jnr.ffi.Pointer;
 import ru.serce.jnrfuse.ErrorCodes;
 import ru.serce.jnrfuse.FuseFillDir;
@@ -17,7 +17,7 @@ import ru.serce.jnrfuse.struct.FuseFileInfo;
 
 public class WUDToWUDContainer implements FuseContainer {
     private final String filename;
-    private final Optional<WUDInfo> wudInfo;
+    private final Optional<WiiUDisc> wudInfo;
     private final Optional<FuseDirectory> parent;
 
     public WUDToWUDContainer(Optional<FuseDirectory> parent, File c) {
@@ -91,7 +91,7 @@ public class WUDToWUDContainer implements FuseContainer {
 
         try {
             byte[] data;
-            data = wudInfo.get().getWUDDiscReader().readEncryptedToByteArray(offset, 0, size);
+            data = wudInfo.get().getReader().get().readEncryptedToByteArray(offset, 0, size);
             buf.put(0, data, 0, data.length);
             return data.length;
         } catch (IOException e) {

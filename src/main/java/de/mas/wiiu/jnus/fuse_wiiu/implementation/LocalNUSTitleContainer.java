@@ -7,8 +7,8 @@ import java.util.Optional;
 
 import de.mas.wiiu.jnus.NUSTitle;
 import de.mas.wiiu.jnus.NUSTitleLoaderLocal;
-import de.mas.wiiu.jnus.entities.TMD;
 import de.mas.wiiu.jnus.entities.Ticket;
+import de.mas.wiiu.jnus.entities.TMD.TitleMetaData;
 import de.mas.wiiu.jnus.fuse_wiiu.Settings;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.fuse_wiiu.utils.TicketUtils;
@@ -28,7 +28,7 @@ public class LocalNUSTitleContainer extends GroupFuseContainer {
         long titleID = 0;
         short version = 0;
         try {
-            TMD tmd = TMD.parseTMD(new File(folder.getAbsoluteFile() + File.separator + "title.tmd"));
+            TitleMetaData tmd = TitleMetaData.parseTMD(new File(folder.getAbsoluteFile() + File.separator + "title.tmd"));
             titleID = tmd.getTitleID();
             version = tmd.getTitleVersion();
         } catch (IOException | ParseException e2) {

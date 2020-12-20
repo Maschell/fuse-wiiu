@@ -14,6 +14,9 @@ public class TicketUtils {
         if (folder != null) {
             ticketFile = FileUtils.getFileIgnoringFilenameCases(folder.getAbsolutePath(), "title.tik");
         }
+        if (ticketFile == null) {
+            ticketFile = FileUtils.getFileIgnoringFilenameCases(folder.getAbsolutePath(), "cetk");
+        }
         Ticket ticket = null;
         if (ticketFile != null && ticketFile.exists()) {
             try {

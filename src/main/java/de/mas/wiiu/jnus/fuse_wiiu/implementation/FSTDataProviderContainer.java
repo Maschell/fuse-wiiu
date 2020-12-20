@@ -3,7 +3,9 @@ package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import de.mas.wiiu.jnus.entities.fst.FSTEntry;
+import de.mas.wiiu.jnus.entities.FST.nodeentry.DirectoryEntry;
+import de.mas.wiiu.jnus.entities.FST.nodeentry.FileEntry;
+import de.mas.wiiu.jnus.entities.FST.nodeentry.NodeEntry;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
@@ -42,11 +44,11 @@ public class FSTDataProviderContainer implements FuseContainer {
 
     @Override
     public int open(String path, FuseFileInfo fi) {
-        Optional<FSTEntry> entryOpt = FSTUtils.getFSTEntryByFullPath(getDataProvider().getRoot(), path);
+        Optional<NodeEntry> entryOpt = FSTUtils.getFSTEntryByFullPath(getDataProvider().getRoot(), path);
         if (entryOpt.isPresent()) {
-            if (entryOpt.get().isDir()) {
+            if (entryOpt.get().isDirectory()) {
                 return -ErrorCodes.EISDIR();
-            } else if (!entryOpt.get().isNotInPackage()) {
+            } else if (!entryOpt.get().isLink()) {
                 return 0;
             }
         }
@@ -60,18 +62,18 @@ public class FSTDataProviderContainer implements FuseContainer {
             stat.st_nlink.set(2);
             return 0;
         }
-        Optional<FSTEntry> entryOpt = FSTUtils.getFSTEntryByFullPath(getDataProvider().getRoot(), path);
+        Optional<NodeEntry> entryOpt = FSTUtils.getFSTEntryByFullPath(getDataProvider().getRoot(), path);
 
         int res = 0;
         if (entryOpt.isPresent()) {
-            FSTEntry entry = entryOpt.get();
-            if (entry.isDir()) {
+            NodeEntry entry = entryOpt.get();
+            if (entry.isDirectory()) {
                 stat.st_mode.set(FileStat.S_IFDIR | 0755);
                 stat.st_nlink.set(2);
             } else {
                 stat.st_mode.set(FileStat.S_IFREG | FileStat.ALL_READ);
                 stat.st_nlink.set(1);
-                stat.st_size.set(entry.getFileSize());
+                stat.st_size.set(((FileEntry) entry).getSize());
             }
         } else {
             System.out.println("error for " + path);
@@ -82,10 +84,10 @@ public class FSTDataProviderContainer implements FuseContainer {
 
     @Override
     public int readdir(String path, Pointer buf, FuseFillDir filter, long offset, FuseFileInfo fi) {
-        FSTEntry entry = getDataProvider().getRoot();
+        DirectoryEntry entry = getDataProvider().getRoot();
 
         if (!path.equals("/")) {
-            Optional<FSTEntry> entryOpt = FSTUtils.getFileEntryDir(entry, path);
+            Optional<DirectoryEntry> entryOpt = FSTUtils.getFileEntryDir(entry, path);
             if (!entryOpt.isPresent()) {
                 return -ErrorCodes.ENOENT();
             }
@@ -95,9 +97,9 @@ public class FSTDataProviderContainer implements FuseContainer {
         filter.apply(buf, ".", null, 0);
         filter.apply(buf, "..", null, 0);
 
-        for (FSTEntry e : entry.getChildren()) {
-            if (!e.isNotInPackage()) {
-                filter.apply(buf, e.getFilename(), null, 0);
+        for (NodeEntry e : entry.getChildren()) {
+            if (!e.isLink()) {
+                filter.apply(buf, e.getName(), null, 0);
             }
         }
         return 0;
@@ -105,19 +107,19 @@ public class FSTDataProviderContainer implements FuseContainer {
 
     @Override
     public int read(String path, Pointer buf, long size, long offset, FuseFileInfo fi) {
-        Optional<FSTEntry> entryopt = FSTUtils.getFSTEntryByFullPath(getDataProvider().getRoot(), path);
-        if (entryopt.isPresent() && !entryopt.get().isNotInPackage()) {
+        Optional<NodeEntry> entryopt = FSTUtils.getFSTEntryByFullPath(getDataProvider().getRoot(), path);
+        if (entryopt.isPresent() && !entryopt.get().isLink() && entryopt.get().isFile()) {
 
-            FSTEntry entry = entryopt.get();
+            FileEntry entry = (FileEntry) entryopt.get();
 
-            if (offset >= entry.getFileSize()) {
+            if (offset >= entry.getSize()) {
                 return 0;
             }
-            if (offset + size > entry.getFileSize()) {
-                size = entry.getFileSize() - offset;
+            if (offset + size > entry.getSize()) {
+                size = entry.getSize() - offset;
             }
-            
-            if(size > Integer.MAX_VALUE) {
+
+            if (size > Integer.MAX_VALUE) {
                 System.err.println("Request read size was too big.");
                 return -ErrorCodes.EIO();
             }

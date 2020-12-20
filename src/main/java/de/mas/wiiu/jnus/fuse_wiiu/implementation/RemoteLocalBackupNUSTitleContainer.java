@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import de.mas.wiiu.jnus.NUSTitle;
-import de.mas.wiiu.jnus.NUSTitleLoaderLocalBackup;
+import de.mas.wiiu.jnus.NUSTitleLoaderRemoteLocal;
 import de.mas.wiiu.jnus.entities.Ticket;
 import de.mas.wiiu.jnus.fuse_wiiu.Settings;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
@@ -13,11 +13,11 @@ import de.mas.wiiu.jnus.fuse_wiiu.utils.TicketUtils;
 import de.mas.wiiu.jnus.implementations.FSTDataProviderNUSTitle;
 import de.mas.wiiu.jnus.utils.Utils;
 
-public class LocalBackupNUSTitleContainer extends GroupFuseContainer {
+public class RemoteLocalBackupNUSTitleContainer extends GroupFuseContainer {
 
     private File folder;
 
-    public LocalBackupNUSTitleContainer(Optional<FuseDirectory> parent, File folder) {
+    public RemoteLocalBackupNUSTitleContainer(Optional<FuseDirectory> parent, File folder) {
         super(parent);
         this.folder = folder;
     }
@@ -31,17 +31,19 @@ public class LocalBackupNUSTitleContainer extends GroupFuseContainer {
                 long titleID = Utils.StringToLong(folder.getName());
                 NUSTitle t = null;
                 Optional<Ticket> ticketOpt = TicketUtils.getTicket(folder, Settings.titlekeyPath, titleID, Settings.retailCommonKey);
+                System.out.println(ticketOpt);
                 if (!ticketOpt.isPresent()) {
+                    
                     return null;
                 }
                 Ticket ticket = ticketOpt.get();
                 try {
-                    t = NUSTitleLoaderLocalBackup.loadNUSTitle(folder.getAbsolutePath(), version, ticket);
+                    t = NUSTitleLoaderRemoteLocal.loadNUSTitle(folder.getAbsolutePath(), version, ticket);
                 } catch (Exception e) {
                     // Try dev ticket
                     ticket = Ticket.createTicket(ticket.getEncryptedKey(), titleID, Settings.devCommonKey);
                     try {
-                        t = NUSTitleLoaderLocalBackup.loadNUSTitle(folder.getAbsolutePath(), version, ticket);
+                        t = NUSTitleLoaderRemoteLocal.loadNUSTitle(folder.getAbsolutePath(), version, ticket);
                     } catch (Exception e1) {
                         e.printStackTrace();
                         e1.printStackTrace();

@@ -12,6 +12,7 @@ import lombok.val;
 public class MultipleFSTDataProviderFuseContainer<T> extends GroupFuseContainer {
     private final File file;
     private final FSTDataProviderLoader<T> loader;
+    private int i = 0;
 
     public MultipleFSTDataProviderFuseContainer(Optional<FuseDirectory> parent, File file, FSTDataProviderLoader<T> loader) {
         super(parent);
@@ -31,7 +32,7 @@ public class MultipleFSTDataProviderFuseContainer<T> extends GroupFuseContainer 
 
     void parseContents(List<FSTDataProvider> dps) {
         for (val dp : dps) {
-            this.addFuseContainer(dp.getName(), new FSTDataProviderContainer(getParent(), dp));
+            this.addFuseContainer(dp.getName() + "_" + (++i), new FSTDataProviderContainer(getParent(), dp));
         }
     }
 }

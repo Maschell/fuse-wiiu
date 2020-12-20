@@ -10,6 +10,7 @@ import de.mas.wiiu.jnus.fuse_wiiu.implementation.LocalBackupNUSTitleContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.LocalNUSTitleContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.MultipleFSTDataProviderFuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.MultipleFSTDataProviderRecursiveFuseContainer;
+import de.mas.wiiu.jnus.fuse_wiiu.implementation.RemoteLocalBackupNUSTitleContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDToWUDContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.WoomyNUSTitleContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.loader.WUDFSTDataProviderLoader;
@@ -25,14 +26,22 @@ public class FuseContainerWrapper {
 
     public static Map<String, FuseContainer> createFuseContainer(Optional<FuseDirectory> parent, File c) {
         System.out.println("Mounting " + c.getAbsolutePath());
+        
         Map<String, FuseContainer> result = new HashMap<>();
+        if (c.exists() && c.isDirectory()) {
+            File[] tmd = c.listFiles(f -> f.isFile() && f.getName().startsWith("tmd."));
+            if (tmd != null && tmd.length > 0) {
+                result.put(prefix + c.getName(), new RemoteLocalBackupNUSTitleContainer(parent, c));
+                return result;
+            }
+        }
         if (c.exists() && c.isDirectory()) {
             File[] tmd = c.listFiles(f -> f.isFile() && f.getName().equals("title.tmd"));
             if (tmd != null && tmd.length > 0) {
                 // In case there is a tmd file
 
                 // Checks if we have the local backup format
-                File[] versions = c.listFiles(f -> f.isDirectory() && f.getName().startsWith("v"));
+                File[] versions = c.listFiles(f -> f.getName().startsWith("tmd."));
                 if (versions != null && versions.length > 0 && c.getName().length() == 16 && Utils.StringToLong(c.getName()) > 0) {
                     result.put(prefix + c.getName(), new LocalBackupNUSTitleContainer(parent, c));
                     return result;
@@ -55,8 +64,7 @@ public class FuseContainerWrapper {
             
             return result;
         }
-        
-
+       
         if (checkWUD(result, parent, c)) {
             return result;
         }
@@ -70,7 +78,7 @@ public class FuseContainerWrapper {
     }
 
     private static boolean checkWUD(Map<String, FuseContainer> result, Optional<FuseDirectory> parent, File c) {
-        if (c.exists() && c.isFile() && (c.getName().endsWith(".wux") || c.getName().endsWith(".wud") || c.getName().endsWith(".ddi"))) {
+        if (c.exists() && c.isFile() && (c.getName().endsWith(".wux") || c.getName().endsWith(".wud") || c.getName().endsWith(".ddi") || c.getName().endsWith(".wumada"))) {
             if (c.length() == WUDDiscReaderSplitted.WUD_SPLITTED_FILE_SIZE && !c.getName().endsWith("part1.wud")) {
                 return false;
             }
