@@ -5,3 +5,4 @@ common.key
 *.key
 .settings/
 target/
+.idea/
