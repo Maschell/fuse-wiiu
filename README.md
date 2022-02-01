@@ -126,16 +126,13 @@ Expected file layout:
 The `title.tik` is optional. If no ticket was found, a file `[titleID].key` (where `[titleID]` is the titleID of the .tmd)containing the key in binary (16 bytes) is expected in `~/.wiiu/titlekeypath`.
 
 ## Extended installable format (tmd/h3/app) with multiple versions.
-It's possible to have to mount multiple versions of a installble title. In this case, all `.app` files are expected in the root, and a `title.tmd` for each version inside a folder `v[version]` where `[version]` is the version number.
+It's possible to have to mount multiple versions of a installble title. In this case, all `.app` files are expected in the root, and a `tmd.[VERSION]` for each tmd of a version.
 
 Expected file layout:
 ```
-v0
-  - title.tmd
-v16
-  - title.tmd
-v48
-  - title.tmd
+- tmd.0
+- tmd.16
+- tmd.48
 - 0000000X.app
 - 0000000X.h3
 - (title.tik)

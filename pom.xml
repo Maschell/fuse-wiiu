@@ -5,7 +5,7 @@
 
 	<groupId>de.mas.wiiu.jnus</groupId>
 	<artifactId>fuse-wiiu</artifactId>
-	<version>0.3</version>
+	<version>0.4</version>
 	<packaging>jar</packaging>
 
 	<name>fuse-wiiu</name>
@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>com.github.Maschell</groupId>
 			<artifactId>JNUSLib</artifactId>
-			<version>b95e1ab</version>
+			<version>822cf2d</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
