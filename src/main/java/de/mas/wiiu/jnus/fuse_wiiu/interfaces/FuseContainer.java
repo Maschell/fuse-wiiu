@@ -9,26 +9,26 @@ import ru.serce.jnrfuse.struct.FuseFileInfo;
 
 /**
  * Simplified version of the FuseFS interface.
- * 
- * @author Maschell
  *
+ * @author Maschell
  */
 public interface FuseContainer extends FuseDirectory {
     /**
      * Wrapper for the getattr function of the FuseFS interface.
      * When this function is called, the path will be relative to this FuseContainer
-     * 
+     * <p>
      * Get file attributes.
      * <p>
      * Similar to stat().  The 'st_dev' and 'st_blksize' fields are
      * ignored.  The 'st_ino' field is ignored except if the 'use_ino'
      * mount option is given.
      */
-    public int getattr(String path, FileStat stat);
+    int getattr(String path, FileStat stat);
+
     /**
      * Wrapper for the getattr function of the FuseFS interface.
      * When this function is called, the path will be relative to this FuseContainer
-     *
+     * <p>
      * File open operation
      * <p>
      * No creation (O_CREAT, O_EXCL) and by default also no
@@ -46,12 +46,12 @@ public interface FuseContainer extends FuseDirectory {
      *
      * @see jnr.constants.platform.OpenFlags
      */
-    public int open(String path, FuseFileInfo fi);
+    int open(String path, FuseFileInfo fi);
 
     /**
      * Wrapper for the readdir function of the FuseFS interface.
      * When this function is called, the path will be relative to this FuseContainer
-     * 
+     * <p>
      * Read directory
      * <p>
      * This supersedes the old getdir() interface.  New applications
@@ -71,12 +71,12 @@ public interface FuseContainer extends FuseDirectory {
      * is full (or an error happens) the filler function will return
      * '1'.
      */
-    public int readdir(String path, Pointer buf, FuseFillDir filter, @off_t long offset, FuseFileInfo fi);
+    int readdir(String path, Pointer buf, FuseFillDir filter, @off_t long offset, FuseFileInfo fi);
 
     /**
      * Wrapper for the getattr function of the FuseFS interface.
      * When this function is called, the path will be relative to this FuseContainer
-     * 
+     * <p>
      * Read data from an open file
      * <p>
      * Read should return exactly the number of bytes requested except
@@ -86,17 +86,17 @@ public interface FuseContainer extends FuseDirectory {
      * value of the read system call will reflect the return value of
      * this operation.
      */
-    public int read(String path, Pointer buf, @size_t long size, @off_t long offset, FuseFileInfo fi);
+    int read(String path, Pointer buf, @size_t long size, @off_t long offset, FuseFileInfo fi);
 
     /**
      * This function will be called when ever the FuseContainer needs to update it's children.
      */
-    public void init();
+    void init();
 
     /**
      * This function will be called right before this FuseContainer won't be used anymore.
      */
-    public void deinit();
+    void deinit();
 
-   
+
 }

@@ -1,13 +1,13 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
-import java.io.File;
-import java.util.List;
-import java.util.Optional;
-
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FSTDataProviderLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
 import lombok.val;
+
+import java.io.File;
+import java.util.List;
+import java.util.Optional;
 
 public class MultipleFSTDataProviderFuseContainer<T> extends GroupFuseContainer {
     private final File file;

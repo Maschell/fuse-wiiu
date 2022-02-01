@@ -1,15 +1,14 @@
 package de.mas.wiiu.jnus.fuse_wiiu.utils;
 
+import de.mas.wiiu.jnus.WUDLoader;
+import de.mas.wiiu.jnus.fuse_wiiu.Settings;
+import de.mas.wiiu.jnus.implementations.wud.WiiUDisc;
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
-
-import org.apache.commons.io.FilenameUtils;
-
-import de.mas.wiiu.jnus.WUDLoader;
-import de.mas.wiiu.jnus.fuse_wiiu.Settings;
-import de.mas.wiiu.jnus.implementations.wud.WiiUDisc;
 
 public class WUDUtils {
     public static Optional<WiiUDisc> loadWUDInfo(File file) {

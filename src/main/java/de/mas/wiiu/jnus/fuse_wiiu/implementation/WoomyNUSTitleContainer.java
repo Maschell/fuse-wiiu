@@ -1,11 +1,11 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
-import java.io.File;
-import java.util.Optional;
-
 import de.mas.wiiu.jnus.NUSTitleLoaderWoomy;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.implementations.FSTDataProviderNUSTitle;
+
+import java.io.File;
+import java.util.Optional;
 
 public class WoomyNUSTitleContainer extends GroupFuseContainer {
     private final File file;

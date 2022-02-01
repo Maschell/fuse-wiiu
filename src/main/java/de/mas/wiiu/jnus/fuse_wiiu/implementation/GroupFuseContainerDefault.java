@@ -1,13 +1,13 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
-import java.util.Optional;
-
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
+
+import java.util.Optional;
 
 /**
  * Default GroupFuseContainer implementation
- * @author Maschell
  *
+ * @author Maschell
  */
 public class GroupFuseContainerDefault extends GroupFuseContainer {
 

@@ -1,5 +1,13 @@
 package de.mas.wiiu.jnus.fuse_wiiu;
 
+import de.mas.wiiu.jnus.fuse_wiiu.implementation.GroupFuseContainer;
+import de.mas.wiiu.jnus.fuse_wiiu.implementation.GroupFuseContainerDefault;
+import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
+import de.mas.wiiu.jnus.fuse_wiiu.utils.FuseContainerWrapper;
+import de.mas.wiiu.jnus.utils.HashUtil;
+import de.mas.wiiu.jnus.utils.Utils;
+import org.apache.commons.cli.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -8,20 +16,6 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.GroupFuseContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.GroupFuseContainerDefault;
-import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.utils.FuseContainerWrapper;
-import de.mas.wiiu.jnus.utils.HashUtil;
-import de.mas.wiiu.jnus.utils.Utils;
 
 public class Main {
     private static final String DEV_COMMON_KEY = "devcommon.key";
@@ -168,7 +162,7 @@ public class Main {
         }
 
         RootFuseFS stub = new RootFuseFS(root);
-        try {       
+        try {
             System.out.println("Mounting " + new File(inputPath).getAbsolutePath() + " to " + mount.getAbsolutePath());
             stub.mount(mount.toPath(), true, false);
         } finally {

@@ -1,11 +1,5 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import de.mas.wiiu.jnus.NUSTitle;
 import de.mas.wiiu.jnus.entities.TMD.Content;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
@@ -15,6 +9,12 @@ import ru.serce.jnrfuse.ErrorCodes;
 import ru.serce.jnrfuse.FuseFillDir;
 import ru.serce.jnrfuse.struct.FileStat;
 import ru.serce.jnrfuse.struct.FuseFileInfo;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public class NUSTitleEncryptedFuseContainer implements FuseContainer {
     private final Optional<FuseDirectory> parent;

@@ -1,18 +1,13 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.fuse_wiiu.utils.FuseContainerWrapper;
 import lombok.val;
+
+import java.io.File;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Representation of a directory on the OS filesystem. For every children of this directory the FuseContainerWrapper is used to create children if needed.

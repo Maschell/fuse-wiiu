@@ -1,12 +1,5 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation.loader;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import de.mas.wiiu.jnus.WUDLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.Settings;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FSTDataProviderLoader;
@@ -15,13 +8,20 @@ import de.mas.wiiu.jnus.implementations.wud.WiiUDisc;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
 import lombok.Getter;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 public class WUDFSTDataProviderLoader implements FSTDataProviderLoader<WiiUDisc> {
     @Getter
-    private static WUDFSTDataProviderLoader instance =  new WUDFSTDataProviderLoader();
-    
+    private static final WUDFSTDataProviderLoader instance = new WUDFSTDataProviderLoader();
+
     private WUDFSTDataProviderLoader() {
     }
-    
+
     @Override
     public List<FSTDataProvider> getDataProvider(WiiUDisc info) {
         List<FSTDataProvider> dps = new ArrayList<>();

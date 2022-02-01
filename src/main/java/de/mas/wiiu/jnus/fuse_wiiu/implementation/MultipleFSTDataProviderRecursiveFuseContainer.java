@@ -1,11 +1,5 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.List;
-import java.util.Optional;
-
 import de.mas.wiiu.jnus.NUSTitleLoaderFST;
 import de.mas.wiiu.jnus.entities.FST.nodeentry.DirectoryEntry;
 import de.mas.wiiu.jnus.entities.FST.nodeentry.FileEntry;
@@ -16,6 +10,12 @@ import de.mas.wiiu.jnus.implementations.FSTDataProviderNUSTitle;
 import de.mas.wiiu.jnus.interfaces.FSTDataProvider;
 import de.mas.wiiu.jnus.interfaces.HasNUSTitle;
 import de.mas.wiiu.jnus.utils.FSTUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Optional;
 
 public class MultipleFSTDataProviderRecursiveFuseContainer<T> extends MultipleFSTDataProviderFuseContainer<T> {
     public MultipleFSTDataProviderRecursiveFuseContainer(Optional<FuseDirectory> parent, File input, FSTDataProviderLoader<T> loader) {

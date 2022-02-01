@@ -1,8 +1,5 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import de.mas.wiiu.jnus.entities.FST.nodeentry.DirectoryEntry;
 import de.mas.wiiu.jnus.entities.FST.nodeentry.FileEntry;
 import de.mas.wiiu.jnus.entities.FST.nodeentry.NodeEntry;
@@ -16,6 +13,9 @@ import ru.serce.jnrfuse.ErrorCodes;
 import ru.serce.jnrfuse.FuseFillDir;
 import ru.serce.jnrfuse.struct.FileStat;
 import ru.serce.jnrfuse.struct.FuseFileInfo;
+
+import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * FuseContainer implementation based on a FSTDataProvider.

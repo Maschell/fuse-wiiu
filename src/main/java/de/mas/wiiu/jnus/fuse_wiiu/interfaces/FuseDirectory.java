@@ -4,16 +4,15 @@ import java.util.Optional;
 
 /**
  * Representation of a directory.
- * 
- * @author Maschell
  *
+ * @author Maschell
  */
 public interface FuseDirectory {
 
     /**
      * Returns the parent of this FuseDirectory.
-     * 
+     *
      * @return parent
      */
-    public Optional<FuseDirectory> getParent();
+    Optional<FuseDirectory> getParent();
 }

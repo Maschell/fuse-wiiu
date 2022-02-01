@@ -1,12 +1,12 @@
 package de.mas.wiiu.jnus.fuse_wiiu.utils;
 
+import de.mas.wiiu.jnus.entities.Ticket;
+import de.mas.wiiu.jnus.utils.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Optional;
-
-import de.mas.wiiu.jnus.entities.Ticket;
-import de.mas.wiiu.jnus.utils.FileUtils;
 
 public class TicketUtils {
     public static Optional<Ticket> getTicket(File folder, File keyFolder, long titleID, byte[] commonKey) {

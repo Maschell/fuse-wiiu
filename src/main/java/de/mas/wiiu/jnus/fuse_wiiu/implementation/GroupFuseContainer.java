@@ -1,12 +1,5 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Map.Entry;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import jnr.ffi.Pointer;
@@ -17,11 +10,17 @@ import ru.serce.jnrfuse.FuseFillDir;
 import ru.serce.jnrfuse.struct.FileStat;
 import ru.serce.jnrfuse.struct.FuseFileInfo;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+
 /**
  * Implementation of an FuseContainer which can hold serveral FuseContainers emulated as directories.
- * 
- * @author Maschell
  *
+ * @author Maschell
  */
 public abstract class GroupFuseContainer implements FuseContainer {
     private final Map<String, FuseContainer> containerMap = new HashMap<>();

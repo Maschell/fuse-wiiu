@@ -1,24 +1,17 @@
 package de.mas.wiiu.jnus.fuse_wiiu.utils;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.FSFuseContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.LocalBackupNUSTitleContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.LocalNUSTitleContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.MultipleFSTDataProviderFuseContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.MultipleFSTDataProviderRecursiveFuseContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.RemoteLocalBackupNUSTitleContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.WUDToWUDContainer;
-import de.mas.wiiu.jnus.fuse_wiiu.implementation.WoomyNUSTitleContainer;
+import de.mas.wiiu.jnus.fuse_wiiu.implementation.*;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.loader.WUDFSTDataProviderLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.implementation.loader.WumadFSTDataProviderLoader;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.implementations.wud.reader.WUDDiscReaderSplitted;
 import de.mas.wiiu.jnus.utils.Utils;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class FuseContainerWrapper {
 
@@ -45,19 +38,19 @@ public class FuseContainerWrapper {
                 return result;
             }
         }
-        
-        if (c.exists() && c.getName().endsWith(".woomy")) {            
+
+        if (c.exists() && c.getName().endsWith(".woomy")) {
             result.put(prefix + c.getName(), new WoomyNUSTitleContainer(parent, c));
             return result;
         }
-        
+
         if (c.exists() && c.getName().endsWith(".wumad")) {
             result.put(prefix + c.getName(), new MultipleFSTDataProviderFuseContainer<>(parent, c, WumadFSTDataProviderLoader.getInstance()));
             result.put(prefix + "[EXTRA] " + c.getName(), new MultipleFSTDataProviderRecursiveFuseContainer<>(parent, c, WumadFSTDataProviderLoader.getInstance()));
-            
+
             return result;
         }
-       
+
         if (checkWUD(result, parent, c)) {
             return result;
         }

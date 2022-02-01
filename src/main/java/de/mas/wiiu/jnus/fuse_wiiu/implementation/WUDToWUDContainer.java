@@ -1,9 +1,5 @@
 package de.mas.wiiu.jnus.fuse_wiiu.implementation;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Optional;
-
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseContainer;
 import de.mas.wiiu.jnus.fuse_wiiu.interfaces.FuseDirectory;
 import de.mas.wiiu.jnus.fuse_wiiu.utils.WUDUtils;
@@ -14,6 +10,10 @@ import ru.serce.jnrfuse.ErrorCodes;
 import ru.serce.jnrfuse.FuseFillDir;
 import ru.serce.jnrfuse.struct.FileStat;
 import ru.serce.jnrfuse.struct.FuseFileInfo;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Optional;
 
 public class WUDToWUDContainer implements FuseContainer {
     private final String filename;
