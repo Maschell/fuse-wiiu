@@ -54,7 +54,6 @@ fuse-wiiu will be started from the command line and requires Java 8 and a fuse i
 ## Input path
 The most imported argument in the `-in` argument which defines the input path. In most cases this will be a folder, but it's also possible to choose a WUD/WUX directly. If a folder was chosen as input, it will be mirrored to the mounpath, but normal files be hidden. Directories will still be as expected, and whenever a support titles can be mounted, it will be emulated as directory with the prefix `[EMULATED] `. More information about the behavious on different fileformats can be found on "Supported formats".
 
-
 ## Mount path
 The mountpath will be set via the `-mountpath` argument and will set the target of fuse-wiiu. This can be almost any path (and a drive on Windows).
 Just make sure:
@@ -113,7 +112,6 @@ For all discs (except kiosk discs and .wumad), a file containing the disc key is
 Multiple WUD/WUX in the same directory are possible, they won't be mounted until you open them.
 
 ## Installable format (tmd/h3/app)
-Supports the
 
 Expected file layout:
 ```
@@ -123,10 +121,10 @@ Expected file layout:
 - (title.tik)
 ```
 
-The `title.tik` is optional. If no ticket was found, a file `[titleID].key` (where `[titleID]` is the titleID of the .tmd)containing the key in binary (16 bytes) is expected in `~/.wiiu/titlekeypath`.
+The `title.tik` is optional. If no ticket was found, a file `[titleID].key` (where `[titleID]` is the titleID of the .tmd)containing the key in binary (16 bytes) is expected in `~/.wiiu/titlekeypath` (default `~/.wiiu/titleKeys`).
 
 ## Extended installable format (tmd/h3/app) with multiple versions.
-It's possible to have to mount multiple versions of a installble title. In this case, all `.app` files are expected in the root, and a `tmd.[VERSION]` for each tmd of a version.
+It's possible to have to mount multiple versions of an installable title. In this case, all `.app` files are expected in the root, and a `tmd.[VERSION]` for each tmd of a version.
 
 Expected file layout:
 ```
@@ -138,7 +136,23 @@ Expected file layout:
 - (title.tik)
 ```
 
-The `title.tik` is optional. If no ticket was found, a file `[titleID].key` (where `[titleID]` is the titleID of the .tmd)containing the key in binary (16 bytes) is expected in `~/.wiiu/titlekeypath`.
+The `title.tik` is optional. If no ticket was found, a file `[titleID].key` (where `[titleID]` is the titleID of the .tmd)containing the key in binary (16 bytes) is expected in `~/.wiiu/titlekeypath` (default `~/.wiiu/titleKeys`).
+
+## NUS installable format (tmd/h3/app) with multiple versions.
+It's possible to have to mount multiple versions of an installable title. In this case, all content files are expected to have no extension in the root directory. A `tmd.[VERSION]` for each tmd of a version is expected.
+
+Expected file layout:
+```
+- tmd.0
+- tmd.16
+- tmd.48
+- 0000000X
+- 0000000X.h3
+- (cetk)
+```
+
+The `cetk` is optional. If no ticket was found, a file `[titleID].key` (where `[titleID]` is the titleID of the .tmd) containing the key in binary (16 bytes) is expected in `~/.wiiu/titlekeypath` (default `~/.wiiu/titleKeys`).
+
 
 # Used libraries
 

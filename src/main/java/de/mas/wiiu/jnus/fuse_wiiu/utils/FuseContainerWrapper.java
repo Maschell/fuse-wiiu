@@ -22,6 +22,16 @@ public class FuseContainerWrapper {
 
         Map<String, FuseContainer> result = new HashMap<>();
         if (c.exists() && c.isDirectory()) {
+            File[] tmd = c.listFiles(f -> f.isFile() && f.getName().startsWith("tmd"));
+            File[] appFiles = c.listFiles(f -> f.isFile() && f.getName().startsWith("000") && f.getName().length() == 8);
+            if (tmd != null && tmd.length > 0  && appFiles != null && appFiles.length > 0) {
+                result.put(prefix + c.getName(), new RemoteLocalBackupNUSTitleContainer(parent, c));
+                return result;
+            }
+        }
+
+
+        if (c.exists() && c.isDirectory()) {
             File[] tmd = c.listFiles(f -> f.isFile() && (f.getName().startsWith("tmd.") || f.getName().startsWith("title.tmd")));
             if (tmd != null && tmd.length > 0) {
                 // In case there is a tmd file
